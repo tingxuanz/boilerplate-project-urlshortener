@@ -3,8 +3,10 @@
 var express = require('express');
 var mongo = require('mongodb');
 var mongoose = require('mongoose');
-
 var cors = require('cors');
+const bodyParser = require('body-parser');
+
+const validateURL = require('./middlewares/validateURL');
 
 var app = express();
 
@@ -15,6 +17,9 @@ var port = process.env.PORT || 3000;
 // mongoose.connect(process.env.MONGOLAB_URI);
 
 app.use(cors());
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 /** this project needs to parse POST bodies **/
 // you should mount the body-parser here
@@ -29,6 +34,10 @@ app.get('/', function(req, res){
 // your first API endpoint... 
 app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
+});
+
+app.post('/api/shorturl/new', validateURL, (req, res) => {
+  res.json({msg: 'POST new'});
 });
 
 
