@@ -4,6 +4,7 @@ dependencies:
   express: 5.0.0-alpha.6
   mongodb: 2.2.36
   mongoose: 4.13.14
+  mongoose-plugin-autoinc: 1.1.9
 packages:
   /accepts/1.3.5:
     dependencies:
@@ -319,6 +320,12 @@ packages:
       node: '>=0.10.3'
     resolution:
       integrity: sha512-P2SBLQ8Z0PVx71ngoXwo12+FiSfbNfGOClAao03/bant5DgLNkOPAck5IaJcEk4gKlQhDEURzfR3xuBG1/B+IA==
+  /mongoose-plugin-autoinc/1.1.9:
+    dev: false
+    peerDependencies:
+      mongoose: '>=4.0.0 || >=5.0.0'
+    resolution:
+      integrity: sha512-DCkXJjgdQhMJCoRd1xwgKUQCOb/VgC8t3ewZ3+0GNCqCdYD1nxIdnvecO1IWh3ER8KINL98A0b97DgRVwOMxsg==
   /mongoose/4.13.14:
     dependencies:
       async: 2.6.0
@@ -609,3 +616,4 @@ specifiers:
   express: ^5.0.0-alpha.2
   mongodb: ^2.2.5
   mongoose: ^4.5.7
+  mongoose-plugin-autoinc: ^1.1.9

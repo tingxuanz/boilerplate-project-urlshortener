@@ -8,13 +8,16 @@ const bodyParser = require('body-parser');
 
 const validateURL = require('./middlewares/validateURL');
 
+
 var app = express();
 
 // Basic Configuration 
 var port = process.env.PORT || 3000;
 
 /** this project needs a db !! **/ 
-// mongoose.connect(process.env.MONGOLAB_URI);
+mongoose.connect(process.env.MONGOLAB_URI);
+
+const Url = require('./models/Url');
 
 app.use(cors());
 
@@ -37,7 +40,26 @@ app.get("/api/hello", function (req, res) {
 });
 
 app.post('/api/shorturl/new', validateURL, (req, res) => {
-  res.json({msg: 'POST new'});
+  const originalUrl = req.body.url;
+  Url.findOne({ originalUrl }, (err, result) => {
+    if (err) return console.error(err);
+    if (result) {
+      res.json({ 
+        original_url: originalUrl,
+        short_url: result.shortCode
+      });
+    } else {
+      let url = new Url({originalUrl: originalUrl});
+      url.save((err, data) => {
+        if (err) return console.error(err);
+        res.json({ 
+          original_url: data.originalUrl,
+          short_url: data.shortCode
+        });
+      });
+    }
+  });
+  
 });
 
 
