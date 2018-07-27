@@ -39,10 +39,29 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
+app.get('/api/shorturl/:shortCode', (req, res) => {
+
+  const shortCode = req.params.shortCode;
+  Url.findOne({ shortCode }, (err, result) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({error: 'internal error'});
+    }
+    if (result) {
+      res.redirect(result.originalUrl);
+    } else {
+      res.status(404).json({error: 'No short url found for given input'});
+    }
+  });
+});
+
 app.post('/api/shorturl/new', validateURL, (req, res) => {
   const originalUrl = req.body.url;
   Url.findOne({ originalUrl }, (err, result) => {
-    if (err) return console.error(err);
+    if (err) {
+      console.error(err);
+      return res.status(500).json({error: 'internal error'});
+    }
     if (result) {
       res.json({ 
         original_url: originalUrl,
@@ -51,7 +70,10 @@ app.post('/api/shorturl/new', validateURL, (req, res) => {
     } else {
       let url = new Url({originalUrl: originalUrl});
       url.save((err, data) => {
-        if (err) return console.error(err);
+        if (err) {
+          console.error(err);
+          return res.status(500).json({error: 'internal error'});
+        }
         res.json({ 
           original_url: data.originalUrl,
           short_url: data.shortCode

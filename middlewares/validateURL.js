@@ -7,10 +7,10 @@ module.exports = (req, res, next) => {
   try {
     const myURL = new URL(inputURL);
     dns.lookup(myURL.hostname, (err) => {
-      if (err) return res.json({error: 'invalid URL'});
+      if (err) return res.status(422).json({error: 'invalid URL'});
       next();
     });
   } catch(err) {
-    res.json({error: 'invalid URL'});
+    res.status(422).json({error: 'invalid URL'});
   }
 };
